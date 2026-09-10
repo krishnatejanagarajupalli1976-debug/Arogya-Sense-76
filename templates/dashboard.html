@@ -1,0 +1,109 @@
+{% extends 'base.html' %}{% block title %}Overview | campusflow{% endblock %}{% block page_name %}Overview{% endblock %}{% block content %}<div class="page-wrap">
+<div class="page-heading">
+<div>
+<div class="eyebrow">{{ institute_name }} · Tuesday, academic year 2024-25</div>
+<h1>Good morning, {{ g.user['username']|capitalize }}.</h1>
+<p class="muted mb-0">Here is what is happening across your campus today.</p>
+</div>
+<a href="{{ url_for('results') }}" class="btn btn-primary">
+<i class="bi bi-plus-lg">
+</i> Enter result</a>
+</div>
+<div class="stat-grid">
+<div class="stat-card">
+<span class="stat-label">Total students</span>
+<strong class="stat-value">{{ stats.students }}</strong>
+<span class="stat-meta">
+<i class="bi bi-arrow-up-right">
+</i> Active records</span>
+</div>
+<div class="stat-card">
+<span class="stat-label">Subjects offered</span>
+<strong class="stat-value">{{ stats.subjects }}</strong>
+<span class="stat-meta">Across all grades</span>
+</div>
+<div class="stat-card">
+<span class="stat-label">Results recorded</span>
+<strong class="stat-value">{{ stats.results }}</strong>
+<span class="stat-meta">{{ passed.passed or 0 }} passed marks</span>
+</div>
+<div class="stat-card">
+<span class="stat-label">Avg. attendance</span>
+<strong class="stat-value">{{ stats.attendance }}%</strong>
+<span class="stat-meta">Across all students</span>
+</div>
+</div>
+<div class="dashboard-grid">
+<section class="panel">
+<div class="panel-heading">
+<div>
+<h3>Subject performance</h3>
+<span>Average marks by subject</span>
+</div>
+<i class="bi bi-three-dots">
+</i>
+</div>
+<div class="chart-wrap">
+<canvas id="performanceChart">
+</canvas>
+</div>
+</section>
+<section class="panel">
+<div class="panel-heading">
+<div>
+<h3>Pass / fail ratio</h3>
+<span>All recorded results</span>
+</div>
+</div>
+<div class="chart-wrap">
+<canvas id="passChart">
+</canvas>
+</div>
+</section>
+<section class="panel" style="grid-column:1/-1">
+<div class="panel-heading">
+<div>
+<h3>Recent students</h3>
+<span>Latest records added to campusflow</span>
+</div>
+<a href="{{ url_for('students') }}" class="btn btn-sm btn-outline-secondary">View all <i class="bi bi-arrow-right">
+</i>
+</a>
+</div>
+<div class="table-responsive">
+<table class="table">
+<thead>
+<tr>
+<th>Student</th>
+<th>Class</th>
+<th>Attendance</th>
+<th>Fee status</th>
+<th>
+</th>
+</tr>
+</thead>
+<tbody>{% for student in recent %}<tr>
+<td>
+<span class="avatar">{{ student.name[0] }}</span>
+<span class="student-name">{{ student.name }}<small>{{ student.roll_no }}</small>
+</span>
+</td>
+<td>{{ student.class_name }}</td>
+<td>{{ student.attendance }}%</td>
+<td>
+<span class="badge-soft {% if student.fee_status == 'Paid' %}badge-pass{% else %}badge-pending{% endif %}">{{ student.fee_status }}</span>
+</td>
+<td class="text-end">
+<a href="{{ url_for('report', student_id=student.id) }}" class="text-secondary">
+<i class="bi bi-arrow-up-right">
+</i>
+</a>
+</td>
+</tr>{% endfor %}</tbody>
+</table>
+</div>
+</section>
+</div>
+</div>{% endblock %}{% block scripts %}<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js">
+</script>
+<script>const labels={{ averages|map(attribute='name')|list|tojson }}, values={{ averages|map(attribute='average')|list|tojson }};new Chart(document.getElementById('performanceChart'),{type:'bar',data:{labels:labels,datasets:[{data:values,backgroundColor:'#ed6a5a',borderRadius:5,barThickness:22}]},options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,max:100,grid:{color:'#eef0f2'},ticks:{font:{size:10}}},x:{grid:{display:false},ticks:{font:{size:10}}}}}});new Chart(document.getElementById('passChart'),{type:'doughnut',data:{labels:['Passed','Needs review'],datasets:[{data:[{{ passed.passed or 0 }},{{ (passed.total or 0)-(passed.passed or 0) }}],backgroundColor:['#80bda0','#f2ded9'],borderWidth:0}]},options:{maintainAspectRatio:false,cutout:'72%',plugins:{legend:{position:'bottom',labels:{usePointStyle:true,padding:18,font:{size:11}}}}}});</script>{% endblock %}

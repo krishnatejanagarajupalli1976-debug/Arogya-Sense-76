@@ -1,0 +1,40 @@
+{% extends 'base.html' %}{% block title %}Sign in | campusflow{% endblock %}{% block auth_content %}<div class="login-page">
+<div class="login-decoration">
+<div class="login-orbit">
+</div>
+<div class="login-copy">
+<span class="brand-mark">
+<i class="bi bi-mortarboard-fill">
+</i>
+</span>
+<h1>Make every mark<br>
+<em>matter.</em>
+</h1>
+<p>A calmer, clearer way to run your academic office.</p>
+</div>
+</div>
+<div class="login-panel">
+<div class="login-form">
+<div class="brand dark">
+<span class="brand-mark">
+<i class="bi bi-mortarboard-fill">
+</i>
+</span>
+<span>campus<span class="brand-accent">flow</span>
+</span>
+</div>
+<p class="eyebrow mt-5">Admin and student portal</p>
+<h2>Welcome back</h2>
+<p class="muted">Sign in to continue managing your campus.</p>{% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}{% for category, message in messages %}<div class="alert alert-{{ category }}">{{ message }}</div>{% endfor %}{% endif %}{% endwith %}<form method="post" class="mt-4">
+<label>Username<input name="username" class="form-control" value="admin" required>
+</label>
+<label class="mt-3">Password<input name="password" type="password" class="form-control" value="admin123" required>
+</label>
+<button class="btn btn-primary w-100 mt-4">Sign in <i class="bi bi-arrow-up-right">
+</i>
+</button>
+</form>
+<p class="login-hint">Admin: admin / admin123 · Student: ST-2401 / student123</p>
+</div>
+</div>
+</div>{% endblock %}
