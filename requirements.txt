@@ -1,8 +1,5 @@
 fastapi==0.115.6
-httpx==0.28.1
 numpy==2.2.2
 scikit-learn==1.6.1
-shap==0.46.0
 streamlit==1.41.1
-uvicorn[standard]==0.34.0
-pytest==8.3.4
+uvicorn==0.34.0

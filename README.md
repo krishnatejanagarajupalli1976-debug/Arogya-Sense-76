@@ -31,4 +31,4 @@ Invoke-RestMethod http://127.0.0.1:8000/healthcare-case -Method Post -ContentTyp
 
 The endpoint returns deterministic validation results for triage, screening, classification, explainability, data splitting, and model evaluation scenarios. These rules are educational checks and do not replace clinical assessment.
 
-Run tests with `pytest -q`.
+Install test tooling with `pip install -r requirements-dev.txt`, then run tests with `pytest -q`.
