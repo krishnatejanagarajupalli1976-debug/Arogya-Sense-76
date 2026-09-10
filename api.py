@@ -18,6 +18,16 @@ class HealthcareCaseRequest(BaseModel):
     input_text: str = Field(min_length=1)
 
 
+@app.get("/")
+def root() -> dict:
+    return {
+        "service": "arogyasense",
+        "status": "ok",
+        "docs": "/docs",
+        "health": "/health",
+    }
+
+
 @app.get("/health")
 def health() -> dict:
     return {"status": "ok", "service": "arogyasense", **model_metadata()}
